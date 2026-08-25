@@ -1,10 +1,16 @@
-import { GoogleGenAI } from "@google/genai";
+const { GoogleGenAI } = require("@google/genai");
 
-const ai = new GoogleGenAI({});
-
-const interaction = await ai.interactions.create({
-  model: "gemini-3.7-flash",
-  input: "Explain how AI works in a few words",
+const ai = new GoogleGenAI({
+    apiKey: process.env.GEMINI_API_KEY
 });
 
-console.log(interaction.output_text);
+async function generateContent(prompt) {
+    const result = await ai.models.generateContent({
+        model: "gemini-3-flash-preview",
+        contents: prompt
+    });
+
+    return result.text;
+}
+
+module.exports = generateContent;
